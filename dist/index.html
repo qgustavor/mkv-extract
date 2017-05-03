@@ -1,0 +1,22 @@
+<!doctype html><meta charset="utf-8">
+<title>MKV Extractor</title>
+<!-- Style from http://codepen.io/prasanjit/pen/NxjZMO -->
+<link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+<link rel="stylesheet" href="main.css">
+<h2>MKV Extractor</h2>
+<div class="file-drop-area">
+  <span class="fake-btn">Choose files</span>
+  <span class="file-msg">or drag and drop files here</span>
+  <input class="file-input" type="file" multiple>
+</div>
+<div class="info">
+  Subtitles and attachments will be extracted, zipped and downloaded.<br>
+  <noscript>No servers were harmed in this experiment: please enable JavaScript.</noscript>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"
+  integrity="sha256-RbP/rbx4XeYJH6eYUniR63Jk5NEV48Gjestg49cNSWY="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"
+  integrity="sha256-FPJJt8nA+xL4RU6/gsriA8p8xAeLGatoyTjldvQKGdE="
+  crossorigin="anonymous"></script>
+<script src="main.js"></script>
