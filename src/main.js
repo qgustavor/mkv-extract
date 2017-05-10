@@ -25,7 +25,7 @@ function handleDropInactive () {
 
 function handleFiles (event) {
   const files = event.target.files
-  statusEl.textContent = 'Loading ' + files.length + ' files...'
+  statusEl.textContent = `Loading ${files.length} ${files.length === 1 ? 'file' : 'files'}...`
 
   const loadedData = []
   const sumSizes = Array.from(files).map(e => e.size).reduce((a, b) => a + b, 0)
@@ -63,7 +63,7 @@ function handleFiles (event) {
   }
 
   function packData () {
-    statusEl.textContent = `${loadedData.length} files extracted - ${errors} failed`
+    statusEl.textContent = `${loadedData.length} ${loadedData.length === 1 ? 'file' : 'files'} extracted - ${errors} failed`
     if (loadedData.length === 0) return
 
     const zip = new JSZip()

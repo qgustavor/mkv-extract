@@ -26,11 +26,12 @@ h2 {
   border: 1px dashed #7c7db3;
   border-radius: 3px;
   position: relative;
-  width: 450px;
+  width: 500px;
   max-width: 100%;
   margin: 0 auto;
   padding: 26px 20px 30px;
-  transition: 0.2s;
+  transition: 0.2s background-color;
+  box-sizing: border-box;
 }
 .file-drop-area.is-active {
   background-color: #3F4069;
