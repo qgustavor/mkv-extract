@@ -83,7 +83,7 @@ function handleFiles (event) {
       })
     }
     zip.generateAsync({type: 'blob'})
-    .then(content => saveAs(content, filename))
+      .then(content => saveAs(content, filename))
   }
 }
 
@@ -181,9 +181,9 @@ function handleStream (stream, callback) {
         const endTimestamp = formatFn(chunkTimestamp + lineTimestamp + duration)
 
         const fixedLine = isASS
-        ? ('Dialogue: ' + [lineParts[1], startTimestamp, endTimestamp]
-          .concat(lineParts.slice(2)).join(','))
-        : ((lineIndex + 1) + '\r\n' +
+          ? ('Dialogue: ' + [lineParts[1], startTimestamp, endTimestamp]
+            .concat(lineParts.slice(2)).join(','))
+          : ((lineIndex + 1) + '\r\n' +
           startTimestamp.replace('.', ',') + ' --> ' + endTimestamp.replace('.', ',') + '\r\n' +
           line + '\r\n')
 
