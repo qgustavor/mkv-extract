@@ -24,7 +24,3 @@ Extract .ASS and .SRT subtitles and also any kind of attachment.
 
 Design based on [this pen](http://codepen.io/prasanjit/pen/NxjZMO)
 from [Prasanjit Singh](http://codepen.io/prasanjit/).
-
-*Note:* it's a bit slow: extracting subtitles from a ~25 minute video requires waiting 2 minutes here. I can
-increase filereader-stream's reading rate, but it will increase CPU and memory usage. For more info check
-[this issue](https://github.com/qgustavor/mkv-extract/issues/1).
