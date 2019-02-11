@@ -29,9 +29,9 @@
   },
   "devDependencies": {
     "browserify": "^14.5.0",
-    "gh-pages": "^1.2.0",
+    "gh-pages": "^2.0.1",
     "google-closure-compiler-js": "^20170423.0.0",
-    "standard": "^11.0.1"
+    "standard": "^12.0.1"
   },
   "dependencies": {
     "ebml": "^2.2.4",
