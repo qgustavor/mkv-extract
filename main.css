@@ -72,4 +72,13 @@ h2 {
 }
 .info {
   margin: 1em auto 33vh;
+  text-align: center;
+}
+
+.info a {
+  color: #D7EFD7;
+}
+.info a:focus, .info a:hover {
+  color: #D7EFD7;
+  text-decoration: none;
 }
