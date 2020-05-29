@@ -17,10 +17,11 @@ Extract .ASS and .SRT subtitles and also any kind of attachment.
 * [progress-stream](https://github.com/freeall/progress-stream), for statistics;
 * [jszip](https://github.com/Stuk/jszip), because it's simpler downloading one file than a lot of files;
 * [filesaver.js](https://github.com/eligrey/FileSaver.js), because it's easy to use;
-* [browserify](https://github.com/substack/node-browserify), because it's simple;
-* [google-closure-compiler-js](https://github.com/google/closure-compiler-js), because I like it;
-* [gh-pages](https://github.com/tschaub/gh-pages), because it's pratical;
+* [parcel](https://parceljs.org/), because it's simple;
 * [standard](https://github.com/feross/standard), why not?
 
 Design based on [this pen](http://codepen.io/prasanjit/pen/NxjZMO)
 from [Prasanjit Singh](http://codepen.io/prasanjit/).
+
+**Note:** this tool, unlike others, can't handle corrupted files as the parser
+just throws up when finding corrupted data.

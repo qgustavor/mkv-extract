@@ -69,7 +69,8 @@ async function handleFiles (event: Event) {
     }
   }
 
-  statusEl.textContent = `${loadedData.length} ${loadedData.length === 1 ? 'file' : 'files'} extracted - ${errors} failed`
+  statusEl.textContent = `${loadedData.length} ${loadedData.length === 1 ? 'file' : 'files'} extracted` +
+    (errors === 0 ? '' : ` - ${errors} failed`)
   if (loadedData.length === 0) return
 
   const zip = new JSZip()
