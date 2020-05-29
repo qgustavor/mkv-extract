@@ -1,7 +1,12 @@
-/* global JSZip, saveAs */
-const ebml = require('ebml')
-const fileReaderStream = require('filereader-stream')
-const progressStream = require('progress-stream')
+// Why? I don't know.
+import 'regenerator-runtime/runtime'
+
+import ebml from 'ebml'
+import fileReaderStream from 'filereader-stream'
+import progressStream from 'progress-stream'
+import saveAs from 'save-as'
+import JSZip from 'jszip'
+import pipeline from 'promisepipe'
 
 const input = document.querySelector('input')
 const droparea = document.querySelector('.file-drop-area')
@@ -23,8 +28,9 @@ function handleDropInactive () {
   droparea.classList.remove('is-active')
 }
 
-function handleFiles (event) {
-  const files = event.target.files
+async function handleFiles (event: Event) {
+  const target = event.target as HTMLInputElement
+  const files = target.files
   statusEl.textContent = `Loading ${files.length} ${files.length === 1 ? 'file' : 'files'}...`
 
   const loadedData = []
@@ -32,15 +38,13 @@ function handleFiles (event) {
   let alreadyLoaded = 0
   let errors = 0
 
-  processFile(0)
-
-  function processFile (fileIndex) {
+  for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
     const file = files[fileIndex]
-    if (!file) return packData()
     const filename = file.name
     const fileStream = fileReaderStream(file, {
       chunkSize: 2 * 1024 * 1024
     })
+
     const stats = progressStream({
       time: 1000,
       length: sumSizes,
@@ -48,46 +52,48 @@ function handleFiles (event) {
     }, progress => {
       // Avoid false ending:
       if (progress.percentage === 100 && fileIndex + 1 !== files.length) return
+
       statusEl.textContent = 'Loading file ' + (fileIndex + 1) + ' / ' + files.length + ': ' +
         progress.percentage.toFixed(2) + '% (' + formatDuration(progress.eta) + ' remaining)'
     })
+
     alreadyLoaded += file.size
-    handleStream(fileStream.pipe(stats), (error, data) => {
+
+    try {
+      const data = await handleStream(fileStream, stats)
+      loadedData.push({ filename, data })
+    } catch (error) {
+      errors++
+    } finally {
       stats.destroy()
-      if (error) errors++
-      if (!error) {
-        loadedData.push({ filename, data })
-      }
-      processFile(fileIndex + 1)
+    }
+  }
+
+  statusEl.textContent = `${loadedData.length} ${loadedData.length === 1 ? 'file' : 'files'} extracted - ${errors} failed`
+  if (loadedData.length === 0) return
+
+  const zip = new JSZip()
+  let filename
+  if (loadedData.length === 1) {
+    filename = loadedData[0].filename + '_tracks.zip'
+    loadedData[0].data.forEach(entry => {
+      zip.file(entry.name, entry.data)
+    })
+  } else {
+    filename = `${Date.now().toString(36)}_tracks.zip`
+    loadedData.forEach(file => {
+      const folder = zip.folder(file.filename)
+      file.data.forEach(entry => {
+        folder.file(entry.name, entry.data)
+      })
     })
   }
 
-  function packData () {
-    statusEl.textContent = `${loadedData.length} ${loadedData.length === 1 ? 'file' : 'files'} extracted - ${errors} failed`
-    if (loadedData.length === 0) return
-
-    const zip = new JSZip()
-    let filename
-    if (loadedData.length === 1) {
-      filename = loadedData[0].filename + '_tracks.zip'
-      loadedData[0].data.forEach(entry => {
-        zip.file(entry.name, entry.data)
-      })
-    } else {
-      filename = `${Date.now().toString(36)}_tracks.zip`
-      loadedData.forEach(file => {
-        const folder = zip.folder(file.filename)
-        file.data.forEach(entry => {
-          folder.file(entry.name, entry.data)
-        })
-      })
-    }
-    zip.generateAsync({type: 'blob'})
-      .then(content => saveAs(content, filename))
-  }
+  const content = await zip.generateAsync({ type: 'blob' })
+  saveAs(content, filename)
 }
 
-function handleStream (stream, callback) {
+async function handleStream (stream, stats) {
   const decoder = new ebml.Decoder()
   const tracks = []
   const trackData = []
@@ -99,17 +105,9 @@ function handleStream (stream, callback) {
   let trackDataTemp
   let trackIndex
 
-  decoder.on('error', (error) => {
-    callback(error)
-    stream.destroy()
-  })
-
   decoder.on('data', (chunk) => {
     switch (chunk[0]) {
       case 'end':
-        // if (chunk[1].name === 'Info') {
-        //   stream.destroy()
-        // }
         if (chunk[1].name === 'TrackEntry') {
           if (trackTypeTemp === 0x11) {
             tracks.push(trackIndexTemp)
@@ -150,7 +148,7 @@ function handleStream (stream, callback) {
           const timecode = readUnsignedInteger(padZeroes(chunk[1].data))
           currentTimecode = timecode
         }
-        if (chunk[1].name === 'BlockDuration') {
+        if (chunk[1].name === 'BlockDuration' && trackIndex !== -1) {
           // the duration is in milliseconds
           const duration = readUnsignedInteger(padZeroes(chunk[1].data))
           trackData[trackIndex].push(duration)
@@ -170,6 +168,7 @@ function handleStream (stream, callback) {
       const eventMatches = isASS ? heading.match(/\[Events\]\s+Format:([^\r\n]*)/) : ['']
       const headingParts = isASS ? heading.split(eventMatches[0]) : ['', '']
       const fixedLines = []
+
       for (let i = 1; i < entries.length; i += 4) {
         const line = entries[i]
         const lineTimestamp = entries[i + 1]
@@ -193,6 +192,7 @@ function handleStream (stream, callback) {
           fixedLines[lineIndex] = fixedLine
         }
       }
+
       const data = (isASS ? (headingParts[0] + eventMatches[0] + '\r\n') : '') +
         fixedLines.join('\r\n') + headingParts[1] + '\r\n'
 
@@ -201,16 +201,29 @@ function handleStream (stream, callback) {
         data
       })
     })
-
-    if (files.length === 0) {
-      callback(Error('No data found'))
-      return
-    }
-
-    callback(null, files)
   })
 
-  stream.pipe(decoder)
+  let closeGlobalHandler
+  const handleGlobalErrors = new Promise((resolve, reject) => {
+    function globalErrorHandler () {
+      reject(Error('Unhandled global error'))
+      window.removeEventListener('error', globalErrorHandler)
+    }
+    closeGlobalHandler = () => {
+      resolve()
+      window.removeEventListener('error', globalErrorHandler)
+    }
+    window.addEventListener('error', globalErrorHandler)
+  })
+
+  await Promise.race([
+    pipeline(stream, stats, decoder),
+    handleGlobalErrors
+  ])
+  closeGlobalHandler()
+
+  if (files.length === 0) throw Error('No data found')
+  return files
 }
 
 function padZeroes (arr) {
@@ -228,28 +241,11 @@ function readUnsignedInteger (data) {
 }
 
 function formatTimestamp (timestamp) {
-  const seconds = timestamp / 1000
-  const hh = Math.floor(seconds / 3600)
-  let mm = Math.floor((seconds - (hh * 3600)) / 60)
-  let ss = (seconds - (hh * 3600) - (mm * 60)).toFixed(2)
-
-  if (mm < 10) mm = `0${mm}`
-  if (ss < 10) ss = `0${ss}`
-
-  return `${hh}:${mm}:${ss}`
+  return new Date(timestamp).toISOString().substring(11, 22).replace(/^0/, '')
 }
 
 function formatTimestampSRT (timestamp) {
-  const seconds = timestamp / 1000
-  let hh = Math.floor(seconds / 3600)
-  let mm = Math.floor((seconds - (hh * 3600)) / 60)
-  let ss = (seconds - (hh * 3600) - (mm * 60)).toFixed(3)
-
-  if (hh < 10) hh = `0${hh}`
-  if (mm < 10) mm = `0${mm}`
-  if (ss < 10) ss = `0${ss}`
-
-  return `${hh}:${mm}:${ss}`
+  return new Date(timestamp).toISOString().substring(11, 22)
 }
 
 function formatDuration (duration) {
