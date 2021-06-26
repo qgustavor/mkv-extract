@@ -10,7 +10,7 @@ Extract MKV subtitles and attachments directly from the browser: https://qgustav
 No downloads or uploads, no extensions, no plugins, no complicated things.
 Extract .ASS and .SRT subtitles and also any kind of attachment.
 
-*Build with:*
+*Built with:*
 
 * [node-ebml](https://github.com/themasch/node-ebml), for MKV parsing;
 * [filereader-stream](https://github.com/maxogden/filereader-stream), for streaming files;
