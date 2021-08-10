@@ -44,7 +44,7 @@
   "dependencies": {
     "ebml": "^2.2.4",
     "filereader-stream": "^1.0.0",
-    "jszip": "^3.4.0",
+    "jszip": "^3.7.0",
     "progress-stream": "^2.0.0",
     "promisepipe": "^3.0.0",
     "save-as": "^0.1.8"
