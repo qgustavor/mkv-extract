@@ -60,3 +60,6 @@ typings/
 
 # Distribution files
 dist/
+
+# Parcel cache
+.parcel-cache

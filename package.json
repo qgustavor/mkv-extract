@@ -5,8 +5,9 @@
   "scripts": {
     "test": "standardx src/*.ts",
     "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html --experimental-scope-hoisting --public-url /mkv-extract/"
+    "build": "parcel build src/index.html --public-url /mkv-extract/"
   },
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qgustavor/mkv-extract.git"
@@ -30,16 +31,23 @@
   },
   "standardx": {
     "parser": "@typescript-eslint/parser",
-    "plugins": [ "@typescript-eslint/eslint-plugin" ]
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ]
   },
   "devDependencies": {
     "@types/ebml": "^3.0.0",
     "@types/progress-stream": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^3.0.2",
     "@typescript-eslint/parser": "^3.0.2",
-    "parcel-bundler": "^1.12.4",
+    "buffer": "^6.0.3",
+    "events": "^3.3.0",
+    "parcel": "^2.5.0",
+    "process": "^0.11.10",
     "standardx": "^5.0.0",
-    "typescript": "^3.9.3"
+    "stream-browserify": "^3.0.0",
+    "typescript": "^3.9.3",
+    "util": "^0.12.4"
   },
   "dependencies": {
     "ebml": "^2.2.4",
