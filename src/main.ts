@@ -101,6 +101,7 @@ async function handleStream (stream, stats) {
   const files = []
   let currentFile = 0
   let currentTimecode
+  let currentCodecId
   let trackIndexTemp
   let trackTypeTemp
   let trackDataTemp
@@ -112,7 +113,7 @@ async function handleStream (stream, stats) {
         if (chunk[1].name === 'TrackEntry') {
           if (trackTypeTemp === 0x11) {
             tracks.push(trackIndexTemp)
-            trackData.push([trackDataTemp])
+            trackData.push([trackDataTemp, currentCodecId])
           }
         }
         break
@@ -133,6 +134,9 @@ async function handleStream (stream, stats) {
         }
         if (chunk[1].name === 'CodecPrivate') {
           trackDataTemp = chunk[1].data.toString()
+        }
+        if (chunk[1].name === 'CodecID') {
+          currentCodecId = chunk[1].data.toString()
         }
         if (chunk[1].name === 'SimpleBlock' || chunk[1].name === 'Block') {
           const trackLength = ebml.tools.readVint(chunk[1].data)
@@ -164,19 +168,25 @@ async function handleStream (stream, stats) {
   stream.on('end', () => {
     trackData.forEach((entries, index) => {
       const heading = entries[0]
-      const isASS = heading.includes('Format:')
+      const codecId = entries[1]
+      const isASS = codecId === 'S_TEXT/ASS' || codecId === 'S_TEXT/SSA'
+      const isSRT = codecId === 'S_TEXT/UTF8'
+
+      // Subtitle formats other than SSA/ASS ans SRT are not supported at the moment
+      if (!isASS && !isSRT) return
+
       const formatFn = isASS ? formatTimestamp : formatTimestampSRT
       const eventMatches = isASS ? heading.match(/\[Events\]\s+Format:([^\r\n]*)/) : ['']
       const headingParts = isASS ? heading.split(eventMatches[0]) : ['', '']
       const fixedLines = []
 
-      for (let i = 1; i < entries.length; i += 4) {
+      for (let i = 2; i < entries.length; i += 4) {
         const line = entries[i]
         const lineTimestamp = entries[i + 1]
         const chunkTimestamp = entries[i + 2]
         const duration = entries[i + 3]
         const lineParts = isASS && line.split(',')
-        const lineIndex = isASS ? lineParts[0] : (i - 1) / 4
+        const lineIndex = isASS ? lineParts[0] : (i - 2) / 4
         const startTimestamp = formatFn(chunkTimestamp + lineTimestamp)
         const endTimestamp = formatFn(chunkTimestamp + lineTimestamp + duration)
 

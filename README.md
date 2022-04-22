@@ -7,8 +7,7 @@ Extract MKV subtitles and attachments directly from the browser: https://qgustav
 3. ???
 4. Profit!
 
-No downloads or uploads, no extensions, no plugins, no complicated things.
-Extract .ASS and .SRT subtitles and also any kind of attachment.
+No downloads or uploads, no extensions, no plugins, no complicated things. Extract .ASS and .SRT subtitles and also any kind of attachment.
 
 *Built with:*
 
@@ -18,10 +17,9 @@ Extract .ASS and .SRT subtitles and also any kind of attachment.
 * [jszip](https://github.com/Stuk/jszip), because it's simpler downloading one file than a lot of files;
 * [filesaver.js](https://github.com/eligrey/FileSaver.js), because it's easy to use;
 * [parcel](https://parceljs.org/), because it's simple;
+* [typescript](https://www.typescriptlang.org/), to avoid bugs;
 * [standard](https://github.com/feross/standard), why not?
 
-Design based on [this pen](http://codepen.io/prasanjit/pen/NxjZMO)
-from [Prasanjit Singh](http://codepen.io/prasanjit/).
+Design based on [this pen](http://codepen.io/prasanjit/pen/NxjZMO) from [Prasanjit Singh](http://codepen.io/prasanjit/).
 
-**Note:** this tool, unlike others, can't handle corrupted files as the parser
-just throws up when finding corrupted data.
+**Note:** this tool, unlike others, can't handle corrupted files as the parser just throws up when finding corrupted data.
