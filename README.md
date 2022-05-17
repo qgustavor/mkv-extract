@@ -9,6 +9,8 @@ Extract MKV subtitles and attachments directly from the browser: https://qgustav
 
 No downloads or uploads, no extensions, no plugins, no complicated things. Extract .ASS and .SRT subtitles and also any kind of attachment.
 
+> **Note:** if you found any issue using this tool read [this issue](https://github.com/qgustavor/mkv-extract/issues/21) for more info.
+
 *Built with:*
 
 * [node-ebml](https://github.com/themasch/node-ebml), for MKV parsing;
@@ -21,5 +23,3 @@ No downloads or uploads, no extensions, no plugins, no complicated things. Extra
 * [standard](https://github.com/feross/standard), why not?
 
 Design based on [this pen](http://codepen.io/prasanjit/pen/NxjZMO) from [Prasanjit Singh](http://codepen.io/prasanjit/).
-
-**Note:** this tool, unlike others, can't handle corrupted files as the parser just throws up when finding corrupted data.
