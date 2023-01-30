@@ -1,0 +1,39 @@
+.large-drop {
+  font-size: 2em;
+}
+.large-drop .bx--file-browse-btn,
+.bx--file__selected-file {
+  max-width: 100%;
+}
+.large-drop .bx--file__drop-container {
+  height: 3em;
+}
+html[theme="g90"] .large-drop {
+  --cds-link-01: #a6c8ff;
+}
+.bx--list-box__menu-item, .bx--list-box__menu-item__option {
+  height: auto;
+}
+.bx--checkbox-label-text {
+  display: block;
+}
+.start-extract-btn {
+  float: right;
+  margin-top: 1rem;
+  margin-left: 0.5rem;
+}
+.mt-2 {
+  margin-top: 1rem;
+}
+.bx--toast-notification__subtitle {
+  margin: 0;
+}
+.bx--tooltip__trigger.bx--tooltip__trigger--definition {
+  border-bottom: none;
+}
+body {
+  overflow-x: hidden;
+}
+.main-content {
+  min-width: 100vw;
+}

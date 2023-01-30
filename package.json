@@ -1,13 +1,15 @@
 {
-  "name": "mkv-extract",
-  "version": "1.1.0",
+	"name": "mkv-extract",
+	"version": "2.0.0",
   "description": "Extract MKV tracks and attachments directly from the browser",
-  "scripts": {
-    "test": "standardx src/*.ts",
-    "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html --public-url /mkv-extract/"
-  },
-  "browserslist": "> 0.5%, last 2 versions, not dead",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qgustavor/mkv-extract.git"
@@ -22,39 +24,24 @@
     "url": "https://github.com/qgustavor/mkv-extract/issues"
   },
   "homepage": "https://github.com/qgustavor/mkv-extract#readme",
-  "private": true,
-  "eslintConfig": {
-    "rules": {
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": "error"
-    }
-  },
-  "standardx": {
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint/eslint-plugin"
-    ]
-  },
-  "devDependencies": {
-    "@types/ebml": "^3.0.0",
-    "@types/progress-stream": "^2.0.0",
-    "@typescript-eslint/eslint-plugin": "^3.0.2",
-    "@typescript-eslint/parser": "^3.0.2",
-    "buffer": "^6.0.3",
-    "events": "^3.3.0",
-    "parcel": "^2.5.0",
-    "process": "^0.11.10",
-    "standardx": "^5.0.0",
-    "stream-browserify": "^3.0.0",
-    "typescript": "^3.9.3",
-    "util": "^0.12.4"
-  },
-  "dependencies": {
-    "ebml": "^2.2.4",
-    "filereader-stream": "^1.0.0",
-    "jszip": "^3.7.0",
-    "progress-stream": "^2.0.0",
-    "promisepipe": "^3.0.0",
-    "save-as": "^0.1.8"
-  }
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^1.0.0",
+		"@sveltejs/adapter-static": "^1.0.5",
+		"@sveltejs/kit": "^1.0.0",
+		"carbon-components-svelte": "^0.72.1",
+		"carbon-icons-svelte": "^11.4.0",
+		"standard": "^17.0.0",
+		"svelte": "^3.54.0",
+		"svelte-check": "^3.0.1",
+		"tslib": "^2.4.1",
+		"typescript": "^4.9.3",
+		"vite": "^4.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"async-mutex": "^0.4.0",
+		"filenamify": "^5.1.1",
+		"streamsaver": "^2.0.6",
+		"svelte-local-storage-store": "^0.4.0"
+	}
 }
