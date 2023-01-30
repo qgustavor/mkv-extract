@@ -1,7 +1,7 @@
 {
 	"name": "mkv-extract",
 	"version": "2.0.0",
-  "description": "Extract MKV tracks and attachments directly from the browser",
+	"description": "Extract MKV tracks and attachments directly from the browser",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -10,23 +10,22 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/qgustavor/mkv-extract.git"
-  },
-  "keywords": [
-    "mkv",
-    "browser"
-  ],
-  "author": "qgustavor (https://qgustavor.tk)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/qgustavor/mkv-extract/issues"
-  },
-  "homepage": "https://github.com/qgustavor/mkv-extract#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/qgustavor/mkv-extract.git"
+	},
+	"keywords": [
+		"mkv",
+		"browser"
+	],
+	"author": "qgustavor (https://qgustavor.tk)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/qgustavor/mkv-extract/issues"
+	},
+	"homepage": "https://github.com/qgustavor/mkv-extract#readme",
 	"type": "module",
 	"dependencies": {
-		"@sveltejs/adapter-auto": "^1.0.0",
 		"@sveltejs/adapter-static": "^1.0.5",
 		"@sveltejs/kit": "^1.0.0",
 		"async-mutex": "^0.4.0",
