@@ -42,7 +42,11 @@
             return fileStatuses.get(file) === 'loaded' &&
               fileResults.get(file)?.parsed?.streams?.some(e => e.selected)
           })
-          if (canStartExtraction) startZipExtraction()
+          if (canStartExtraction) {
+            startZipExtraction()
+          } else {
+            $preferences.manualMode = 1
+          }
         }
       })
     }
