@@ -40,10 +40,45 @@ export default async function* extractStreams (files, results, preferences) {
       if (gotError) errorLogs.push(ffmpegResult.stderr)
     }
 
-    // TODO extract multiple streams with a single command where possible to improve performance
+    const fastLaneCodecs = ['ass', 'subrip']
+    const fastLaneStreams = parsed.streams.filter(stream =>
+      stream.selected &&
+      stream.codec_type === 'subtitle' &&
+      fastLaneCodecs.includes(stream.codec_name)
+    )
+    
+    if (fastLaneStreams.length) {
+      const nameMap = new Map()
+      const argv = fastLaneStreams.map(stream => {
+        const formatExt = codecExtensionMap[stream.codec_name] ?? stream.codec_name
+        const nameTemplate = nameTemplateMap[stream.codec_type]
+        const name = interpolateFilename(nameTemplate, file, parsed, stream) + '.' + formatExt
+        const basename = name.split('/').pop()
+        nameMap.set(basename, name)
+        return [
+          '-i', '/data/' + file.name,
+          '-map', '0:' + stream.index,
+          '-codec', 'copy',
+          basename
+        ]
+      }).flat()
+      const ffmpegResult = await runCommand(file, argv)
+      for (const file of ffmpegResult.files) {
+        const name = nameMap.get(file.name)
+        const contents = file.data
+        yield { type: 'file', name, contents }
+        gotSuccess = true
+      }
+      const missingFiles = Array.from(nameMap.keys())
+        .filter(basename => !ffmpegResult.files.some(file => file.name === basename))
+      if (missingFiles.length) {
+        errorLogs.push(ffmpegResult.stderr)
+      }
+    }
 
     for (const stream of parsed.streams) {
       if (!stream.selected) continue
+      if (fastLaneStreams.includes(stream)) continue
       if (stream.codec_type === 'metadata') {
         yield {
           type: 'file',

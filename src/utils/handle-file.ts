@@ -39,6 +39,9 @@ function handleFile (file, preferences) {
           let parsed, error
           try {
             parsed = JSON.parse(stdout)
+            if (!parsed.streams || parsed.streams.length === 0) {
+              throw Error('No streams found')
+            }
             autoSelectStreams(parsed, preferences)
           } catch (err) {
             error = err
