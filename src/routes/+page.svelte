@@ -38,7 +38,11 @@
         pendingFiles--
 
         if (pendingFiles === 0 && !$preferences.manualMode) {
-          startZipExtraction()
+          const canStartExtraction = files.some(file => {
+            return fileStatuses.get(file) === 'loaded' &&
+              fileResults.get(file)?.parsed?.streams?.some(e => e.selected)
+          })
+          if (canStartExtraction) startZipExtraction()
         }
       })
     }
