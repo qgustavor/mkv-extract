@@ -23,7 +23,7 @@
         <dd>Because it works in a browser and in most cases pages cannot access contents from another webpages (see <Link inline href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy">Same-origin policy</Link>).</dd>
 
         <dt>Why some file of mine is not working?</dt>
-        <dd>This project is a work in progress. See the error log and, if you really think the issue is in the app and not your file which is corrupted, open an issue in GitHub.</dd>
+        <dd>First, files larger than 1 GB are not well supported, some may work, but your mileage may vary. Second, this project is a work in progress. See the error log and, if you really think the issue is in the application and not your file which is corrupted, open an issue in GitHub.</dd>
 
         <dt>Why videos are extracted to MP4 or MKV files?</dt>
         <dd>To reduce FFmpeg build sizes it does not include muxers to raw formats such as H264 and H265.</dd>

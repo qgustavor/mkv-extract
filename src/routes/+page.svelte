@@ -245,7 +245,7 @@
             {@const streams = result?.parsed?.streams}
             <AccordionItem>
               <svelte:fragment slot="title">
-                <h5>{file.name}</h5>
+                <h5 class="break-all">{file.name}</h5>
                 {#if status === 'loading'}
                   <InlineLoading status="active" description="Processing file..." />
                 {:else if status === 'loaded'}

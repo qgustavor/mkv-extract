@@ -158,6 +158,7 @@
           <ListItem><code>TrackNumber</code>: track number</ListItem>
           <ListItem><code>Language</code>: track language (3 letter code)</ListItem>
           <ListItem><code>AttachmentFilename</code>: attachment filename</ListItem>
+          <ListItem>You can use <code>/</code> to create folders</ListItem>
         </UnorderedList>
       </ToastNotification>
     </Column>

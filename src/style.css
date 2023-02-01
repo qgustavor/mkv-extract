@@ -31,9 +31,12 @@ html[theme="g90"] .large-drop {
 .bx--tooltip__trigger.bx--tooltip__trigger--definition {
   border-bottom: none;
 }
-body {
+html, body {
   overflow-x: hidden;
 }
 .main-content {
   min-width: 100vw;
+}
+.break-all {
+  word-break: break-all;
 }
