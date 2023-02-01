@@ -1,5 +1,6 @@
 <script>
   import { page } from '$app/stores'
+  import { base } from '$app/paths'
   import Light from 'carbon-icons-svelte/lib/Light.svelte'
   import Download from 'carbon-icons-svelte/lib/Download.svelte'
   import LogoGithub from 'carbon-icons-svelte/lib/LogoGithub.svelte'
@@ -16,10 +17,10 @@
   
   let isSideNavOpen = false
   const routes = [
-    ['/', 'Home page'],
-    ['/settings', 'Settings'],
-    ['/help', 'Help'],
-    ['/classic/index.html', 'Classic', true]
+    [base + '/', 'Home page'],
+    [base + '/settings', 'Settings'],
+    [base + '/help', 'Help'],
+    [base + '/classic/index.html', 'Classic', true]
   ]
 </script>
 
