@@ -1,3 +1,5 @@
+import { selectedSymbol } from './handle-file'
+
 export default async function* extractStreams (files, results, preferences) {
   const nameTemplateMap = {
     subtitle: preferences.subtitleFile,
@@ -15,7 +17,18 @@ export default async function* extractStreams (files, results, preferences) {
     const errorLogs = []
     let gotSuccess = false
 
-    const attachmentStreams = parsed.streams.filter(stream => stream.codec_type === 'attachment' && stream.selected)
+    const selectedStreams = parsed?.streams?.filter(stream => stream[selectedSymbol])
+    if (!selectedStreams || selectedStreams.length === 0) {
+      yield {
+        type: 'file-status',
+        status: 'skipped',
+        errorLogs,
+        file
+      }
+      continue
+    }
+
+    const attachmentStreams = selectedStreams.filter(stream => stream.codec_type === 'attachment')
     if (attachmentStreams.length !== 0) {
       const ffmpegResult = await runCommand(file, [
         '-dump_attachment:t', '',
@@ -41,20 +54,21 @@ export default async function* extractStreams (files, results, preferences) {
     }
 
     const fastLaneCodecs = ['ass', 'subrip']
-    const fastLaneStreams = parsed.streams.filter(stream =>
-      stream.selected &&
+    const fastLaneStreams = selectedStreams.filter(stream =>
       stream.codec_type === 'subtitle' &&
       fastLaneCodecs.includes(stream.codec_name)
     )
-    
+
     if (fastLaneStreams.length) {
       const nameMap = new Map()
+      const streamMap = new Map()
       const argv = fastLaneStreams.map(stream => {
         const formatExt = codecExtensionMap[stream.codec_name] ?? stream.codec_name
         const nameTemplate = nameTemplateMap[stream.codec_type]
         const name = interpolateFilename(nameTemplate, file, parsed, stream) + '.' + formatExt
         const basename = name.split('/').pop()
         nameMap.set(basename, name)
+        streamMap.set(basename, stream)
         return [
           '-i', '/data/' + file.name,
           '-map', '0:' + stream.index,
@@ -69,21 +83,26 @@ export default async function* extractStreams (files, results, preferences) {
         yield { type: 'file', name, contents }
         gotSuccess = true
       }
-      const missingFiles = Array.from(nameMap.keys())
-        .filter(basename => !ffmpegResult.files.some(file => file.name === basename))
-      if (missingFiles.length) {
-        errorLogs.push(ffmpegResult.stderr)
+
+      // Mark successful streams as not selected so failed streams will be extracted individually
+      // (solves issues when extracting multiple streams at the same time fails from OOM errors)
+      for (const file of ffmpegResult.files) {
+        streamMap.get(file.name)[selectedSymbol] = false
       }
     }
 
-    for (const stream of parsed.streams) {
-      if (!stream.selected) continue
-      if (fastLaneStreams.includes(stream)) continue
+    for (const stream of selectedStreams) {
+      if (!stream[selectedSymbol]) continue
       if (stream.codec_type === 'metadata') {
+        // Do not include the generated metadata track and remove /data/ from format.filename
+        const clone = structuredClone(parsed)
+        clone.streams.shift()
+        clone.format.filename = clone.format.filename.slice(6)
+
         yield {
           type: 'file',
           name: interpolateFilename(preferences.metadataFile, file, parsed) + '.json',
-          contents: JSON.stringify(parsed)
+          contents: JSON.stringify(clone)
         }
         gotSuccess = true
         continue

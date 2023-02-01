@@ -1,7 +1,8 @@
 <script>
   import { preferences } from '/~/utils/stores'
-  import handleFile from '/~/utils/handle-file'
+  import handleFile, { selectedSymbol } from '/~/utils/handle-file'
   import extractStreams from '/~/utils/extract-streams'
+  import { base } from '$app/paths'
 
   import {
     Grid, Row, Column,
@@ -19,6 +20,7 @@
   let fileResults = new WeakMap()
   let fileExtractionErrors = new WeakMap()
   let pendingFiles = 0
+  const accordionOpen = Symbol('accordion open')
 
   function handleFiles () {
     for (const file of files) {
@@ -40,7 +42,7 @@
         if (pendingFiles === 0 && !$preferences.manualMode) {
           const canStartExtraction = files.some(file => {
             return fileStatuses.get(file) === 'loaded' &&
-              fileResults.get(file)?.parsed?.streams?.some(e => e.selected)
+              fileResults.get(file)?.parsed?.streams?.some(e => e[selectedSymbol])
           })
           if (canStartExtraction) {
             startZipExtraction()
@@ -57,7 +59,7 @@
   async function startFolderExtraction () {
     const rootFolderHandle = await window.showDirectoryPicker({ mode: 'readwrite' })
 
-    // Chromium for some reason considers ~ to be an unsafe character (or at least used to consider)
+    // Chromium for some reason considers ~ to be an unsafe character (last checked on Chromium 109)
     const {default: filenamify} = await import('filenamify/browser')
     const sanitize = filename => filenamify(filename).replaceAll('~', '')
     const { collisionMode } = $preferences
@@ -96,6 +98,8 @@
   async function startZipExtraction () {
     const {createZipWriter} = await import('/~/utils/zip-stream')
     const {default: streamSaver} = await import('streamsaver')
+    
+    streamSaver.mitm = base + '/streamsaver-mitm.html'
 
     let zipController
     const zipStream = createZipWriter({
@@ -161,11 +165,9 @@
           fileStatuses = fileStatuses
           pendingFiles--
 
-          if (result.errorLogs?.length) {
-            const existentLogs = fileExtractionErrors.get(result.file) ?? []
-            fileExtractionErrors.set(result.file, existentLogs.concat(result.errorLogs))
-            fileExtractionErrors = fileExtractionErrors
-          }
+          const existentLogs = fileExtractionErrors.get(result.file) ?? []
+          fileExtractionErrors.set(result.file, existentLogs.concat(result.errorLogs))
+          fileExtractionErrors = fileExtractionErrors
           break
       }
     }
@@ -178,10 +180,14 @@
     return value + ' ' + (value === 1 ? singular : (plural || singular + 's'))
   }
 
-  function renderFileTagline (result) {
+  function renderFileTagline (result, accordionOpen) {
     const streams = result.parsed.streams
-    const selectedStreams = streams.filter(e => e.selected)
-    if (!selectedStreams.length) return 'No streams selected'
+    const selectedStreams = streams.filter(e => e[selectedSymbol])
+    if (!selectedStreams.length) {
+      return accordionOpen
+        ? 'No streams selected, click on the streams to select them'
+        : 'No streams selected, click here to select streams'
+    }
     return handlePlural(selectedStreams.length, 'stream') + ' selected'
   }
 
@@ -198,7 +204,7 @@
   let canStartExtraction
   $: {
     canStartExtraction = files.length && pendingFiles === 0 && files.some(file => {
-      return fileStatuses.get(file) === 'loaded' && fileResults.get(file)?.parsed?.streams?.some(e => e.selected)
+      return fileStatuses.get(file) === 'loaded' && fileResults.get(file)?.parsed?.streams?.some(e => e[selectedSymbol])
     })
   }
 </script>
@@ -243,19 +249,21 @@
             {@const status = fileStatuses.get(file)}
             {@const result = fileResults.get(file)}
             {@const streams = result?.parsed?.streams}
-            <AccordionItem>
+            <AccordionItem bind:open={file[accordionOpen]}>
               <svelte:fragment slot="title">
                 <h5 class="break-all">{file.name}</h5>
                 {#if status === 'loading'}
                   <InlineLoading status="active" description="Processing file..." />
                 {:else if status === 'loaded'}
-                  <InlineLoading status="finished" description="{renderFileTagline(result)}" />
+                  {renderFileTagline(result, file[accordionOpen])}
                 {:else if status === 'extraction-pending'}
                   <InlineLoading status="inactive" description="Waiting to start extraction" />
                 {:else if status === 'extracting'}
                   <InlineLoading status="active" description="Extracting..." />
                 {:else if status === 'finished'}
                   <InlineLoading status="finished" description="Extraction finished" />
+                {:else if status === 'skipped'}
+                  <InlineLoading status="finished" description="Extraction skipped" />
                 {:else if status === 'load-error'}
                   <InlineLoading status="error" description="Could not load the file" />
                 {:else if status === 'extraction-error'}
@@ -269,7 +277,7 @@
                 <div>Please wait while file is loading</div>
               {:else if status === 'loaded'}
                 {#each streams as stream}
-                  <Checkbox labelText={renderStreamLabel(stream)} bind:checked={stream.selected} />
+                  <Checkbox labelText={renderStreamLabel(stream)} bind:checked={stream[selectedSymbol]} />
                 {/each}
               {:else if status === 'load-error'}
                 <CodeSnippet type="multi" code={result.stderr} hideCopyButton expanded wrapText />
@@ -279,7 +287,7 @@
                 {/each}
               {:else if streams}
                 {#each streams as stream}
-                  <Checkbox labelText={renderStreamLabel(stream)} bind:checked={stream.selected} disabled />
+                  <Checkbox labelText={renderStreamLabel(stream)} bind:checked={stream[selectedSymbol]} disabled />
                 {/each}
               {/if}
             </AccordionItem>

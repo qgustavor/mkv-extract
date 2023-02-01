@@ -1,5 +1,7 @@
 import { Mutex } from 'async-mutex'
 
+export const selectedSymbol = Symbol('selected')
+
 function handleFile (file, preferences) {
   return new Promise((resolve, reject) => {
     const worker = new Worker('./ffprobe-worker-mkve.js')
@@ -78,7 +80,7 @@ function autoSelectStreams (ffprobeResult, preferences) {
   const subtitleLanguagesArr = subtitleLanguages.toLowerCase().split(/[^a-z]+/g)
   for (const stream of ffprobeResult.streams) {
     const flag = flagMap[stream.codec_type]
-    stream.selected = flag === 'lang'
+    stream[selectedSymbol] = flag === 'lang'
       ? subtitleLanguagesArr.includes(stream.tags?.language)
       : flag !== 'skip'
   }
@@ -91,7 +93,7 @@ function autoSelectStreams (ffprobeResult, preferences) {
       : chapterCount === 1
         ? 'file, streams and chapter metadata'
         : 'file, streams and chapters metadata',
-    selected: metadataMode !== 'skip'
+    [selectedSymbol]: metadataMode !== 'skip'
   })
 }
 
