@@ -1,6 +1,6 @@
 # MKV Extract
 
-Extract MKV subtitles and attachments online, directly from your browser: https://qgustavor.github.io/mkv-extract/
+Extract MKV files online, directly from your browser: https://qgustavor.github.io/mkv-extract/
 
 1. Open or drop a MKV file
 2. Wait a while...

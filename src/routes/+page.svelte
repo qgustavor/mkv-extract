@@ -213,6 +213,7 @@
   <Row>
     <Column>
       <h1>MKV Extract</h1>
+      <p>Extract MKV files online, directly from your browser</p>
       <FileUploaderDropContainer
         class="large-drop"
         labelText={
@@ -299,7 +300,7 @@
             disabled={!canStartExtraction}
             class="start-extract-btn"
             on:click={startZipExtraction}
-          >Extract to ZIP file</Button>
+          >Extract to a zip file</Button>
 
           {#if window.showDirectoryPicker}
             <TooltipDefinition
@@ -311,15 +312,15 @@
                 disabled={!canStartExtraction}
                 on:click={startFolderExtraction}
                 kind="secondary"
-              >Extract to folder</Button>
+              >Extract to a folder</Button>
             </TooltipDefinition>
           {/if}
         {/if}
       {:else}
         {#if $preferences.manualMode}
-          <p>A list of streams will be shown after files being opened, defaulting to the ones set on the settings.</p>
+          <p>A list of streams (like subtitles and attachments) will be shown after files being opened, defaulting to the ones set on the settings{window.showDirectoryPicker ? ', then you can choose between extracting them to a zip file or a folder' : ''}.</p>
         {:else}
-          <p>Streams will be extracted and zipped based on the filters set on the settings.</p>
+          <p>Streams (like subtitles and attachments) will be extracted and zipped based on the filters set on the settings.</p>
         {/if}
       {/if}
     </Column>
