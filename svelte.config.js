@@ -11,7 +11,7 @@ const config = {
 
 	kit: {
     paths: {
-      base: dev ? '' : 'https://qgustavor.github.io/mkv-extract',
+      base: '',
     },
 		adapter: adapter()
 	}
