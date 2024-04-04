@@ -96,6 +96,11 @@
   }
 
   async function startZipExtraction () {
+    const streamCount = files.reduce((sum, file) => {
+      return sum + (fileResults.get(file)?.parsed?.streams?.filter(e => e[selectedSymbol])?.length || 0)
+    }, 0)
+    if (streamCount === 1) return startSingleStreamDownload()
+
     const {createZipWriter} = await import('/~/utils/zip-stream')
     const {default: streamSaver} = await import('streamsaver')
     
@@ -108,9 +113,7 @@
       }
     })
 
-    const namePrefix = files.length === 1
-      ? files[0].name
-      : new Date().toISOString().slice(0, 19).replace('T', ' ').replace(/[^\d ]+/g, '-')
+    const namePrefix = new Date().toISOString().slice(0, 19).replace('T', ' ').replace(/[^\d ]+/g, '-')
     const zipName = `${namePrefix}-extraction.zip`
     const fileStream = streamSaver.createWriteStream(zipName)
 
@@ -144,6 +147,22 @@
       },
       close () {
         return zipController.close()
+      }
+    })
+  }
+  
+  async function startSingleStreamDownload () {
+    const {default: streamSaver} = await import('streamsaver')
+    let writer
+    
+    return handleExtraction({
+      enqueue (name, contents) {
+        const fileStream = streamSaver.createWriteStream(name)
+        writer = fileStream.getWriter()
+        writer.write(contents)
+      },
+      close () {
+        writer.close()
       }
     })
   }

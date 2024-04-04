@@ -4,7 +4,10 @@
 
   import { Content, ToastNotification } from 'carbon-components-svelte'
   import AppHeader from '/~/components/AppHeader.svelte'
+  import { ProgressBar } from '@prgm/sveltekit-progress-bar'
 </script>
+
+<ProgressBar color="#0f62fe" zIndex={9000} />
 
 <AppHeader />
 

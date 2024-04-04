@@ -26,18 +26,22 @@
 	"homepage": "https://github.com/qgustavor/mkv-extract#readme",
 	"type": "module",
 	"dependencies": {
-		"@sveltejs/adapter-static": "^1.0.5",
-		"@sveltejs/kit": "^1.30.4",
-		"async-mutex": "^0.4.0",
-		"carbon-components-svelte": "^0.72.1",
-		"carbon-icons-svelte": "^11.4.0",
-		"filenamify": "^5.1.1",
+		"@sveltejs/adapter-static": "^3.0.1",
+		"@sveltejs/kit": "^2.5.5",
+		"@sveltejs/vite-plugin-svelte": "^3.0.2",
+		"async-mutex": "^0.5.0",
+		"carbon-components-svelte": "^0.85.0",
+		"carbon-icons-svelte": "^12.6.0",
+		"filenamify": "^6.0.0",
 		"streamsaver": "^2.0.6",
-		"svelte": "^3.54.0",
-		"svelte-check": "^3.0.1",
-		"svelte-local-storage-store": "^0.4.0",
-		"tslib": "^2.4.1",
-		"typescript": "^4.9.3",
-		"vite": "^4.5.3"
+		"svelte": "^4.2.12",
+		"svelte-check": "^3.6.9",
+		"svelte-local-storage-store": "^0.6.4",
+		"tslib": "^2.6.2",
+		"typescript": "^5.4.3",
+		"vite": "^5.2.8"
+	},
+	"devDependencies": {
+		"@prgm/sveltekit-progress-bar": "^2.0.0"
 	}
 }

@@ -1,4 +1,4 @@
-.large-drop {
+.large-drop .bx--file__drop-container {
   font-size: 2em;
 }
 .large-drop .bx--file-browse-btn,
@@ -6,7 +6,7 @@
   max-width: 100%;
 }
 .large-drop .bx--file__drop-container {
-  height: 3em;
+  height: 4em;
 }
 html[theme="g90"] .large-drop {
   --cds-link-01: #a6c8ff;
