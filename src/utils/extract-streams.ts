@@ -9,6 +9,7 @@ export default async function* extractStreams (files, results, preferences) {
   const codecExtensionMap = {
     subrip: 'srt'
   }
+  const textEncoder = new TextEncoder()
 
   for (const file of files) {
     yield { type: 'file-status', status: 'extracting', file }
@@ -102,7 +103,7 @@ export default async function* extractStreams (files, results, preferences) {
         yield {
           type: 'file',
           name: interpolateFilename(preferences.metadataFile, file, parsed) + '.json',
-          contents: JSON.stringify(clone)
+          contents: textEncoder.encode(JSON.stringify(clone))
         }
         gotSuccess = true
         continue
