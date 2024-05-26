@@ -7,8 +7,7 @@ export const trailingSlash = true
 export const load = async ({ url }) => {
   const { pathname } = url
 
-  const lang = `${pathname.match(/\w+?(?=\/|$)/) || ''}`
-
+  const lang = pathname.match(/\w+?(?=\/|$)/) || 'en'
   const route = pathname.replace(new RegExp(`^/${lang}`), '')
 
   await setLocale(lang)

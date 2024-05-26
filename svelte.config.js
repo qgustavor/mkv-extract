@@ -9,7 +9,7 @@ const config = {
 
 	kit: {
     paths: {
-      base: '',
+      base: '/mkv-extract',
     },
 		adapter: adapter()
 	}
