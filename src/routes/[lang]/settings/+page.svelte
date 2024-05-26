@@ -1,6 +1,7 @@
 <script>
   import { preferences, resetPreferences } from '/~/utils/stores'
-  
+  import { t } from '$lib/translations'
+
   import {
     Form, FormGroup, Grid, Row, Column,
     Select, SelectItem,
@@ -14,16 +15,16 @@
 <Grid>
   <Row>
     <Column>
-      <h1>Settings</h1>
-    
+      <h1>{$t('settings.title')}</h1>
+
       <Form>
         <Row>
           <Column sm={12} md={12} lg={8}>
             <FormGroup noMargin>
-              <Select id="select-subtitles" labelText="Subtitle extraction mode" bind:selected={$preferences.subtitleMode}>
-                <SelectItem value="all" text="Extract all subtitles" />
-                <SelectItem value="lang" text="Extract subtitles by language" />
-                <SelectItem value="skip" text="Skip subtitles" />
+              <Select id="select-subtitles" labelText={$t('settings.subtitle_extraction_mode')} bind:selected={$preferences.subtitleMode}>
+                <SelectItem value="all" text={$t('settings.all_subtitles')} />
+                <SelectItem value="lang" text={$t('settings.lang_subtitles')} />
+                <SelectItem value="skip" text={$t('settings.skip_subtitles')} />
               </Select>
             </FormGroup>
           </Column>
@@ -31,10 +32,10 @@
             <FormGroup noMargin>
               <TextInput
                 id="subtitle-languages"
-                labelText="Filtered subtitle languages"
+                labelText={$t('settings.subtitle_languages')}
                 helperText={
                   $preferences.subtitleMode === 'lang'
-                    ? 'Enter 3-letter language codes separated by space (e.g.: eng, cmn, hin, spa, fra)'
+                    ? $t('settings.subtitle_languages_helper')
                     : ''
                 }
                 bind:value={$preferences.subtitleLanguages}
@@ -44,33 +45,33 @@
           </Column>
           <Column sm={12} md={12} lg={8}>
             <FormGroup noMargin>
-              <Select id="select-attachments" labelText="Attachment extraction mode" bind:selected={$preferences.attachmentMode}>
-                <SelectItem value="all" text="Extract all attachments" />
-                <SelectItem value="skip" text="Skip attachments" />
+              <Select id="select-attachments" labelText={$t('settings.attachment_extraction_mode')} bind:selected={$preferences.attachmentMode}>
+                <SelectItem value="all" text={$t('settings.all_attachments')} />
+                <SelectItem value="skip" text={$t('settings.skip_attachments')} />
               </Select>
             </FormGroup>
           </Column>
           <Column sm={12} md={12} lg={8}>
             <FormGroup noMargin>
-              <Select id="select-metadata" labelText="Metadata extraction mode" bind:selected={$preferences.metadataMode}>
-                <SelectItem value="json" text="Extract metadata in a .json file" />
-                <SelectItem value="skip" text="Skip metadata" />
+              <Select id="select-metadata" labelText={$t('settings.metadata_extraction_mode')} bind:selected={$preferences.metadataMode}>
+                <SelectItem value="json" text={$t('settings.json_metadata')} />
+                <SelectItem value="skip" text={$t('settings.skip_metadata')} />
               </Select>
             </FormGroup>
           </Column>
           <Column sm={12} md={12} lg={8}>
             <FormGroup noMargin>
-              <Select id="select-video" labelText="Video extraction mode" bind:selected={$preferences.videoMode}>
-                <SelectItem value="all" text="Extract videos" />
-                <SelectItem value="skip" text="Skip video" />
+              <Select id="select-video" labelText={$t('settings.video_extraction_mode')} bind:selected={$preferences.videoMode}>
+                <SelectItem value="all" text={$t('settings.all_video')} />
+                <SelectItem value="skip" text={$t('settings.skip_video')} />
               </Select>
             </FormGroup>
           </Column>
           <Column sm={12} md={12} lg={8}>
             <FormGroup noMargin>
-              <Select id="select-audio" labelText="Audio extraction mode" bind:selected={$preferences.audioMode}>
-                <SelectItem value="all" text="Extract all audio tracks" />
-                <SelectItem value="skip" text="Skip audio" />
+              <Select id="select-audio" labelText={$t('settings.audio_extraction_mode')} bind:selected={$preferences.audioMode}>
+                <SelectItem value="all" text={$t('settings.all_audio')} />
+                <SelectItem value="skip" text={$t('settings.skip_audio')} />
               </Select>
             </FormGroup>
           </Column>
@@ -78,7 +79,7 @@
             <FormGroup noMargin>
               <TextInput
                 id="file-format-subtitle"
-                labelText="Subtitle file template"
+                labelText={$t('settings.subtitle_file_template')}
                 bind:value={$preferences.subtitleFile}
               />
             </FormGroup>
@@ -87,7 +88,7 @@
             <FormGroup noMargin>
               <TextInput
                 id="file-format-attachment"
-                labelText="Attachment file template"
+                labelText={$t('settings.attachment_file_template')}
                 bind:value={$preferences.attachmentFile}
               />
             </FormGroup>
@@ -96,7 +97,7 @@
             <FormGroup noMargin>
               <TextInput
                 id="file-format-metadata"
-                labelText="Metadata file template"
+                labelText={$t('settings.metadata_file_template')}
                 bind:value={$preferences.metadataFile}
               />
             </FormGroup>
@@ -105,7 +106,7 @@
             <FormGroup noMargin>
               <TextInput
                 id="file-format-video"
-                labelText="Video file template"
+                labelText={$t('settings.video_file_template')}
                 bind:value={$preferences.videoFile}
               />
             </FormGroup>
@@ -114,51 +115,51 @@
             <FormGroup noMargin>
               <TextInput
                 id="file-format-audio"
-                labelText="Audio file template"
+                labelText={$t('settings.audio_file_template')}
                 bind:value={$preferences.audioFile}
               />
             </FormGroup>
           </Column>
           <Column sm={12} md={12} lg={8}>
             <FormGroup noMargin>
-              <Select id="collision-mode" labelText="File collision mode" bind:selected={$preferences.collisionMode}>
-                <SelectItem value="rename" text="Rename colliding files" />
-                <SelectItem value="skip" text="Skip colliding files" />
+              <Select id="collision-mode" labelText={$t('settings.file_collision_mode')} bind:selected={$preferences.collisionMode}>
+                <SelectItem value="rename" text={$t('settings.rename_files')} />
+                <SelectItem value="skip" text={$t('settings.skip_collisions')} />
               </Select>
             </FormGroup>
           </Column>
           <Column sm={12} md={12} lg={8}>
-            <Button kind="secondary" on:click={resetPreferences} class="mt-2">Restore default options</Button>
+            <Button kind="secondary" on:click={resetPreferences} class="mt-2">{$t('settings.reset_options')}</Button>
           </Column>
         </Row>
       </Form>
-      
+
       <ToastNotification
         fullWidth
         hideCloseButton
         lowContrast
         kind="info"
-        title="Info"
-        subtitle="Streams will be extracted using their own container where possible, otherwise it will attempt using a single stream MP4/M4A container, otherwise it will use a single stream MKV/MKA container."
+        title={$t('settings.info')}
+        subtitle={$t('settings.stream_containers_info')}
         class="mt-2"
       />
-      
+
       <ToastNotification
         fullWidth
         hideCloseButton
         lowContrast
         kind="info"
-        title="Supported file format placeholders"
+        title={$t('settings.file_format_placeholders_title')}
         class="mt-2"
       >
         <UnorderedList nested slot="subtitle">
-          <ListItem><code>Filename</code>: file name</ListItem>
-          <ListItem><code>FilenameNoExt</code>: file name without extension</ListItem>
-          <ListItem><code>TrackName</code>: track name</ListItem>
-          <ListItem><code>TrackNumber</code>: track number</ListItem>
-          <ListItem><code>Language</code>: track language (3 letter code)</ListItem>
-          <ListItem><code>AttachmentFilename</code>: attachment filename</ListItem>
-          <ListItem>You can use <code>/</code> to create folders</ListItem>
+          <ListItem><code>Filename</code>: {$t('settings.filename_placeholder')}</ListItem>
+          <ListItem><code>FilenameNoExt</code>: {$t('settings.filename_no_ext_placeholder')}</ListItem>
+          <ListItem><code>TrackName</code>: {$t('settings.track_name_placeholder')}</ListItem>
+          <ListItem><code>TrackNumber</code>: {$t('settings.track_number_placeholder')}</ListItem>
+          <ListItem><code>Language</code>: {$t('settings.language_placeholder')}</ListItem>
+          <ListItem><code>AttachmentFilename</code>: {$t('settings.attachment_filename_placeholder')}</ListItem>
+          <ListItem>{$t('settings.folder_creation_placeholder')}</ListItem>
         </UnorderedList>
       </ToastNotification>
     </Column>

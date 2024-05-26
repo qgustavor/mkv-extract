@@ -14,6 +14,8 @@
     TooltipDefinition,
     InlineLoading
   } from 'carbon-components-svelte'
+  
+  import { t } from '$lib/translations'
 
   let files = []
   let fileStatuses = new WeakMap()
@@ -204,14 +206,17 @@
     const selectedStreams = streams.filter(e => e[selectedSymbol])
     if (!selectedStreams.length) {
       return accordionOpen
-        ? 'No streams selected, click on the streams to select them'
-        : 'No streams selected, click here to select streams'
+        ? $t('streams.no-selected-closed')
+        : $t('streams.no-selected-open')
     }
-    return handlePlural(selectedStreams.length, 'stream') + ' selected'
+    return $t('streams.selected', {count: selectedStreams.length})
   }
 
   function renderStreamLabel (stream) {
-    return `${stream.codec_type}: ${stream.codec_name} ${
+    const codecName = stream.codec_type === 'metadata'
+      ? $t('streams.metadata-name', { count: stream.codec_name })
+      : stream.codec_name
+    return `${stream.codec_type}: ${codecName} ${
       stream.tags?.title ? ` - "${stream.tags.title}"` : ''
     }${
       stream.tags?.filename ? ` - "${stream.tags.filename}"` : ''
@@ -231,17 +236,11 @@
 <Grid>
   <Row>
     <Column>
-      <h1>MKV Extract</h1>
-      <p>Extract MKV files online, directly from your browser</p>
+      <h1>{$t('main.name')}</h1>
+      <p>{$t('main.description')}</p>
       <FileUploaderDropContainer
         class="large-drop"
-        labelText={
-          files.length === 0
-            ? 'Click or drop files here to extract'
-            : files.length === 1
-              ? '1 file opened'
-              : files.length + ' files opened'
-        }
+        labelText={$t('main.file-count', {count: files.length})}
         accept={['.mkv', '.mka', '.mks', '.mk3d', 'video/*']}
         on:change={handleFiles}
         bind:files
@@ -254,8 +253,8 @@
     <Row>
       <Column>
         <ContentSwitcher bind:selectedIndex={$preferences.manualMode}>
-          <Switch text="Automatic mode" />
-          <Switch text="Manual mode" />
+          <Switch text={$t('main.automatic-mode')} />
+          <Switch text={$t('main.manual-mode')} />
         </ContentSwitcher>
       </Column>
     </Row>
@@ -273,28 +272,28 @@
               <svelte:fragment slot="title">
                 <h5 class="break-all">{file.name}</h5>
                 {#if status === 'loading'}
-                  <InlineLoading status="active" description="Processing file..." />
+                  <InlineLoading status="active" description={$t('status.loading', { count: files.length })} />
                 {:else if status === 'loaded'}
                   {renderFileTagline(result, file[accordionOpen])}
                 {:else if status === 'extraction-pending'}
-                  <InlineLoading status="inactive" description="Waiting to start extraction" />
+                  <InlineLoading status="inactive" description={$t('status.extraction-pending')}  />
                 {:else if status === 'extracting'}
-                  <InlineLoading status="active" description="Extracting..." />
+                  <InlineLoading status="active" description={$t('status.extracting')}  />
                 {:else if status === 'finished'}
-                  <InlineLoading status="finished" description="Extraction finished" />
+                  <InlineLoading status="finished" description={$t('status.finished')}  />
                 {:else if status === 'skipped'}
-                  <InlineLoading status="finished" description="Extraction skipped" />
+                  <InlineLoading status="finished" description={$t('status.skipped')}  />
                 {:else if status === 'load-error'}
-                  <InlineLoading status="error" description="Could not load the file" />
+                  <InlineLoading status="error" description={$t('status.load-error')}  />
                 {:else if status === 'extraction-error'}
-                  <InlineLoading status="error" description="Could not extract streams" />
+                  <InlineLoading status="error" description={$t('status.extraction-error')}  />
                 {:else if status === 'partial-extraction-error'}
-                  <InlineLoading status="error" description="Could not extract some streams" />
+                  <InlineLoading status="error" description={$t('status.partial-extraction-error')}  />
                 {/if}
               </svelte:fragment>
 
               {#if status === 'loading'}
-                <div>Please wait while file is loading</div>
+                <div>{$t('main.file-loading', { count: files.length })}</div>
               {:else if status === 'loaded'}
                 {#each streams as stream}
                   <Checkbox labelText={renderStreamLabel(stream)} bind:checked={stream[selectedSymbol]} />
@@ -319,11 +318,11 @@
             disabled={!canStartExtraction}
             class="start-extract-btn"
             on:click={startZipExtraction}
-          >Extract to a zip file</Button>
+          >{$t('main.zip-select')}</Button>
 
           {#if window.showDirectoryPicker}
             <TooltipDefinition
-              tooltipText="Please do NOT select the Downloads folder nor system folders nor any other folder which may contain privacy sensitive content."
+              tooltipText={$t('main.folder-select-tooltip')}
               direction="top"
               class="start-extract-btn"
             >
@@ -331,15 +330,15 @@
                 disabled={!canStartExtraction}
                 on:click={startFolderExtraction}
                 kind="secondary"
-              >Extract to a folder</Button>
+              >{$t('main.folder-select')}</Button>
             </TooltipDefinition>
           {/if}
         {/if}
       {:else}
         {#if $preferences.manualMode}
-          <p>A list of streams (like subtitles and attachments) will be shown after files being opened, defaulting to the ones set on the settings{window.showDirectoryPicker ? ', then you can choose between extracting them to a zip file or a folder' : ''}.</p>
+          <p>{$t('main.manual-mode-explained', {folderEnabled: !!window.showDirectoryPicker})}</p>
         {:else}
-          <p>Streams (like subtitles and attachments) will be extracted and zipped based on the filters set on the settings.</p>
+          <p>{$t('main.automatic-mode-explained')}</p>
         {/if}
       {/if}
     </Column>

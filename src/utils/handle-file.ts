@@ -4,7 +4,7 @@ export const selectedSymbol = Symbol('selected')
 
 function handleFile (file, preferences) {
   return new Promise((resolve, reject) => {
-    const worker = new Worker('./ffprobe-worker-mkve.js')
+    const worker = new Worker('../ffprobe-worker-mkve.js')
     let stdout = ''
     let stderr = ''
     
@@ -88,11 +88,7 @@ function autoSelectStreams (ffprobeResult, preferences) {
   const chapterCount = ffprobeResult?.chapters?.length || 0
   ffprobeResult.streams.unshift({
     codec_type: 'metadata',
-    codec_name: chapterCount === 0
-      ? 'file and streams metadata'
-      : chapterCount === 1
-        ? 'file, streams and chapter metadata'
-        : 'file, streams and chapters metadata',
+    codec_name: chapterCount,
     [selectedSymbol]: metadataMode !== 'skip'
   })
 }

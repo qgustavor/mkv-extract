@@ -40,3 +40,6 @@ html, body {
 .break-all {
   word-break: break-all;
 }
+.bx--tooltip--definition .bx--tooltip__trigger {
+  color: white;
+}
