@@ -8,7 +8,7 @@ export const load = async ({ url, params }) => {
   const { pathname } = url
 
   const lang = params.lang ?? (pathname.match(/\/(en|pt)\//)?.[0] || 'en')
-  const route = pathname.replace(new RegExp(`/${lang}/`), '/')
+  const route = pathname.replace(new RegExp(`/mkv-extract/${lang}/`), '/')
 
   await setLocale(lang)
   await setRoute(route)

@@ -15,7 +15,7 @@
   $: ({ route } = $page.data)
   
   function changeLocale (locale) {
-    window.location = `/mkv-extract/${locale}${route.slice(15)}`
+    window.location = `/mkv-extract/${locale}${route}`
   }
 
   let theme = 'g90'
