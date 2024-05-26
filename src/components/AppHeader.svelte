@@ -12,12 +12,10 @@
   } from 'carbon-components-svelte'
 
   import { t, locale, locales } from '$lib/translations'
-  import { goto } from '$app/navigation'
   $: ({ route } = $page.data)
   
   function changeLocale (locale) {
-    goto(`/${locale}${route}`)
-    window.reload()
+    window.location = `/mkv-extract/${locale}${route.slice(15)}`
   }
 
   let theme = 'g90'
