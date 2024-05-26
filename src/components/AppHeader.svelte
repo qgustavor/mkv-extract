@@ -16,7 +16,8 @@
   $: ({ route } = $page.data)
   
   function changeLocale (locale) {
-    window.location = `./${locale}${route}`
+    goto(`/${locale}${route}`)
+    window.reload()
   }
 
   let theme = 'g90'
