@@ -8,6 +8,9 @@ function handleFile (file, preferences) {
     let stdout = ''
     let stderr = ''
     
+    worker.addEventListener('error', error => {
+      resolve({ error, stdout, stderr })
+    })
     worker.addEventListener('message', e => {
       const msg = e.data
 

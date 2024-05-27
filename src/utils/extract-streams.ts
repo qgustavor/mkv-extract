@@ -163,7 +163,7 @@ export default async function* extractStreams (files, results, preferences) {
 
 function runCommand (file, argv) {
   return new Promise((resolve, reject) => {
-    const worker = new Worker('./ffmpeg-worker-mkve.js')
+    const worker = new Worker('../ffmpeg-worker-mkve.js')
     let stdout = ''
     let stderr = ''
 
@@ -200,6 +200,7 @@ function runCommand (file, argv) {
     }
 
     worker.addEventListener('message', messageHandler)
+    worker.addEventListener('error', reject)
   })
 }
 
