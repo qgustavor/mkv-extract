@@ -1,4 +1,5 @@
-import { setLocale, setRoute } from '$lib/translations'
+import { locale, setLocale, setRoute } from '$lib/translations'
+import { browser, building, dev, version } from '$app/environment'
 
 export const prerender = true
 export const trailingSlash = true
@@ -7,11 +8,13 @@ export const trailingSlash = true
 export const load = async ({ url, params }) => {
   const { pathname } = url
 
-  const lang = params.lang ?? (pathname.match(/\/(en|pt)\//)?.[0] || 'en')
-  const route = pathname.replace(new RegExp(`/mkv-extract/${lang}/`), '/')
+  const lang = params.lang ?? 'en'
+  const route = pathname.replace(new RegExp(`^(/mkv-extract)?/${lang}/?`), '/')
 
-  await setLocale(lang)
-  await setRoute(route)
+  if (!browser || !locale.get()) {
+    await setLocale(lang)
+    await setRoute(route)
+  }
 
   return { route, lang }
 }

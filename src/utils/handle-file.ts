@@ -1,10 +1,11 @@
 import { Mutex } from 'async-mutex'
+import { base } from '$app/paths'
 
 export const selectedSymbol = Symbol('selected')
 
 function handleFile (file, preferences) {
   return new Promise((resolve, reject) => {
-    const worker = new Worker('../ffprobe-worker-mkve.js')
+    const worker = new Worker(base + '/ffprobe-worker-mkve.js')
     let stdout = ''
     let stderr = ''
     

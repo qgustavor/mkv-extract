@@ -43,3 +43,6 @@ html, body {
 .bx--tooltip--definition .bx--tooltip__trigger {
   color: white;
 }
+a.bx--header__name {
+  padding: 0 2rem;
+}

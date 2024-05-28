@@ -12,11 +12,7 @@
   } from 'carbon-components-svelte'
 
   import { t, locale, locales } from '$lib/translations'
-  $: ({ route } = $page.data)
-  
-  function changeLocale (locale) {
-    window.location = `/mkv-extract/${locale}${route}`
-  }
+  $: (route = $page.data.route)
 
   let theme = 'g90'
   function changeTheme () {
@@ -58,11 +54,13 @@
         aria-label={$t('header.locale')}
         iconDescription={$t('header.locale')}
         icon={IbmWatsonLanguageTranslator}
+        data-sveltekit-preload-data="false"
       />
       {#each $locales as lc}
         <OverflowMenuItem
           text={$t('locales.' + lc)}
-          on:click={() => changeLocale(lc)}
+          href={`${base}/${lc}${route}`}
+          data-sveltekit-reload
           disabled={lc === $locale}
         />
       {/each}

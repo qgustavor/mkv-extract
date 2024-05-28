@@ -1,4 +1,5 @@
 import { selectedSymbol } from './handle-file'
+import { base } from '$app/paths'
 
 export default async function* extractStreams (files, results, preferences) {
   const nameTemplateMap = {
@@ -163,7 +164,7 @@ export default async function* extractStreams (files, results, preferences) {
 
 function runCommand (file, argv) {
   return new Promise((resolve, reject) => {
-    const worker = new Worker('../ffmpeg-worker-mkve.js')
+    const worker = new Worker(base + '/ffmpeg-worker-mkve.js')
     let stdout = ''
     let stderr = ''
 

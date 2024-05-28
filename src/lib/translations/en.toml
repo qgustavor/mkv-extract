@@ -43,6 +43,8 @@ locale = "Translations"
 [locales]
 en = "English"
 pt = "Português/Portuguese"
+zh = "中文/Mandarin Chinese"
+es = "Español/Spanish"
 
 [settings]
 title = "Settings"

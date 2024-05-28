@@ -8,8 +8,11 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
+    prerender: {
+      handleHttpError: process.platform === 'win32' ? 'warn' : 'fail'
+    },
     paths: {
-      base: '',
+      base: '/mkv-extract',
     },
 		adapter: adapter()
 	}
