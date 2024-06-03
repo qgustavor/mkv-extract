@@ -6,7 +6,6 @@
 
   import {
     Grid, Row, Column,
-    FileUploaderDropContainer,
     FormGroup, Button,
     Accordion, AccordionItem,
     ContentSwitcher, Switch,
@@ -14,6 +13,8 @@
     TooltipDefinition,
     InlineLoading
   } from 'carbon-components-svelte'
+  
+  import FileUploaderDropContainer from '/~/components/FileUploaderDropContainer.svelte'
   
   import { t } from '$lib/translations'
 
