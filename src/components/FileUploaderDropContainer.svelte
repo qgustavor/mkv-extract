@@ -81,8 +81,9 @@
   on:drop|preventDefault|stopPropagation="{({ dataTransfer }) => {
     if (!disabled) {
       over = false;
-      files = [...files, validateFiles([...dataTransfer.files])];
-      dispatch('add', files);
+      const validFiles = validateFiles([...dataTransfer.files])
+      files = [...files, ...validFiles];
+      dispatch('add', validFiles);
       dispatch('change', files);
     }
   }}"
