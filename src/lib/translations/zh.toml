@@ -41,10 +41,13 @@ github = "在GitHub上查看项目"
 locale = "翻译"
 
 [locales]
+# you should update section this on other languages
 en = "English/英语"
 pt = "Português/葡萄牙语"
 zh = "中文"
 es = "Español/西班牙语"
+ar = "العربية/阿拉伯语"
+fr = "Français/法语"
 
 [settings]
 title = "设置"
@@ -112,13 +115,5 @@ not_downloads_explanation_link_text = "它在大多数文件系统中不是保�
 not_downloads_explanation_part2 = "，Chromium也会阻止文件名中的'~'字符，这真的很奇怪，并且在此应用程序中考虑到了这一点。"
 why_ffmpeg = "为什么使用FFmpeg？"
 ffmpeg_explanation = "最初的计划是使用原始的mkvextract代码并将其编译为WASM，但使用FFmpeg似乎更容易，因为已经有一些WASM实现。"
-why_svelte = "为什么使用Svelte？"
-svelte_explanation = "我想尝试一下。我仍然不喜欢它处理反应性的方式，它让我想起了Mithril：Mithril和Svelte都有某些情况下无法自动检测到变化（分别是非跟踪异步函数中的变化和对象/数组中的变化），需要手动解决。Vue在这方面更好，因为它使用代理，可以始终检测变化（以性能为代价，对于这个应用程序来说可以忽略不计）。此外，默认情况下的样式作用域比我预期的要麻烦得多。"
 why_corporate = "为什么这个设计看起来如此企业化？"
 corporate_explanation = "因为它是IBM的Carbon Design：我在寻找一个有很多组件和黑暗模式的Svelte组件库，我也厌倦了Material Design，所以选择了这个。"
-
-[error]
-message = "哦，天哪..."
-404 = "页面未找到。"
-500 = "服务器内部错误。"
-default = "发生了一些错误。"

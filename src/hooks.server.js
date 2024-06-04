@@ -19,8 +19,10 @@ export const handle = async ({ event, resolve }) => {
   }
 
   // Add html `lang` attribute
+  const localeInfo = new Intl.Locale(locale)
+  const { direction } = localeInfo.textInfo
   return resolve({ ...event, locals: { lang: locale } }, {
-    transformPageChunk: ({ html }) => html.replace(/<html.*>/, `<html lang="${locale}">`),
+    transformPageChunk: ({ html }) => html.replace(/<html.*>/, `<html lang="${locale}" dir="${direction}">`),
   })
 }
 

@@ -41,10 +41,13 @@ github = "Ver el proyecto en GitHub"
 locale = "Traducciones"
 
 [locales]
+# you should update section this on other languages
 en = "English/Inglés"
 pt = "Português/Portugués"
 zh = "中文/Mandarín"
 es = "Español"
+ar = "العربية/Árabe"
+fr = "Français/Francés"
 
 [settings]
 title = "Configuraciones"
@@ -112,13 +115,5 @@ not_downloads_explanation_link_text = "no es un carácter reservado en la mayor�
 not_downloads_explanation_part2 = ", lo cual es muy extraño y está considerado en esta aplicación."
 why_ffmpeg = "¿Por qué FFmpeg?"
 ffmpeg_explanation = "El plan original era tomar el código original de mkvextract y compilarlo a WASM, pero usar FFmpeg parecía más fácil, ya que existen algunas implementaciones WASM de este."
-why_svelte = "¿Por qué Svelte?"
-svelte_explanation = "Quería probarlo. Aún no me gusta cómo maneja la reactividad, me recuerda a Mithril: tanto Mithril como Svelte tienen ciertos casos en los que los cambios no se detectan automáticamente (cambios en funciones asíncronas no rastreadas y cambios en objetos/arrays, respectivamente), lo que requiere soluciones manuales. Vue es mejor en este aspecto, ya que usa proxies que permiten detectar siempre los cambios (a costa del rendimiento, lo cual es insignificante para esta aplicación). Además, los estilos con ámbito predeterminado causaron más dolores de cabeza de los que esperaba."
 why_corporate = "¿Por qué este diseño parece tan corporativo?"
 corporate_explanation = "Porque es el Carbon Design de IBM: estaba buscando una biblioteca de componentes Svelte con muchos componentes y modo oscuro, también estaba cansado del Material Design, así que elegí este."
-
-[error]
-message = "Oh, cielos..."
-404 = "Página no encontrada."
-500 = "Error!"
-default = "Ha ocurrido un error."

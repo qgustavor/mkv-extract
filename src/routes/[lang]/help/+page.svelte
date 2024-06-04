@@ -35,9 +35,6 @@
         <dt>{$t('faq.why_ffmpeg')}</dt>
         <dd>{$t('faq.ffmpeg_explanation')}</dd>
 
-        <dt>{$t('faq.why_svelte')}</dt>
-        <dd>{$t('faq.svelte_explanation')}</dd>
-
         <dt>{$t('faq.why_corporate')}</dt>
         <dd>{$t('faq.corporate_explanation')}</dd>
       </dl>
