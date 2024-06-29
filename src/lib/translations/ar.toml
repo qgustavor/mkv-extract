@@ -51,6 +51,7 @@ fr = "Français/الفرنسية"
 
 [settings]
 title = "الإعدادات"
+description = "تغيير إعدادات استخراج الملفات"
 subtitle_extraction_mode = "وضع استخراج الترجمة"
 all_subtitles = "استخراج جميع الترجمات"
 lang_subtitles = "استخراج الترجمات حسب اللغة"

@@ -12,6 +12,11 @@
   } from 'carbon-components-svelte'
 </script>
 
+<svelte:head>
+  <title>{$t('main.name')} - {$t('settings.title')}</title>
+  <meta name="description" content={$t('settings.description')}>
+</svelte:head>
+
 <Grid>
   <Row>
     <Column>

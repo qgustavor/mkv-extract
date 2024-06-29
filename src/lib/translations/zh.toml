@@ -51,6 +51,7 @@ fr = "Français/法语"
 
 [settings]
 title = "设置"
+description = "更改文件提取设置"
 subtitle_extraction_mode = "字幕提取模式"
 all_subtitles = "提取所有字幕"
 lang_subtitles = "按语言提取字幕"

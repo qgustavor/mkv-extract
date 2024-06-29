@@ -51,6 +51,7 @@ fr = "Français/Francés"
 
 [settings]
 title = "Configuraciones"
+description = "Cambiar ajustes de extracción de archivos"
 subtitle_extraction_mode = "Modo de extracción de subtítulos"
 all_subtitles = "Extraer todos los subtítulos"
 lang_subtitles = "Extraer subtítulos por idioma"

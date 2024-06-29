@@ -234,6 +234,11 @@
   }
 </script>
 
+<svelte:head>
+  <title>{$t('main.name')} - {$t('main.description')}</title>
+  <meta name="description" content={$t('main.description')}>
+</svelte:head>
+
 <Grid>
   <Row>
     <Column>

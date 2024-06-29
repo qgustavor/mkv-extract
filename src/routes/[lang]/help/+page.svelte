@@ -3,6 +3,11 @@
   import { t } from '$lib/translations'
 </script>
 
+<svelte:head>
+  <title>{$t('main.name')} - {$t('help.title')}</title>
+  <meta name="description" content={$t('help.description_part1') + ' ' + $t('help.description_link_text') + ' ' + $t('help.description_part2')}>
+</svelte:head>
+
 <Grid>
   <Row>
     <Column>

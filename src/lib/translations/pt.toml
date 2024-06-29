@@ -51,6 +51,7 @@ fr = "Français/Francês"
 
 [settings]
 title = "Configurações"
+description = "Alterar configurações de extração de arquivo"
 subtitle_extraction_mode = "Modo de extração de legendas"
 all_subtitles = "Extrair todas as legendas"
 lang_subtitles = "Extrair legendas por idioma"

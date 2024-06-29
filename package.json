@@ -46,6 +46,7 @@
 		"vite-plugin-toml": "^0.7.0"
 	},
 	"devDependencies": {
+		"@erbelion/vite-plugin-sveltekit-purgecss": "^0.1.0",
 		"@prgm/sveltekit-progress-bar": "^2.0.0"
 	}
 }
